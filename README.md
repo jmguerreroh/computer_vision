@@ -1,5 +1,7 @@
 # Computer Vision Examples
 
+![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-green)
+![distro](https://img.shields.io/badge/ROS2-Humble-blue)
 [![humble](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml/badge.svg?branch=humble)](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml)
 
 This project contains code examples created in Visual Studio Code for Computer Vision using C++ & OpenCV & Point Cloud Library (PCL) in ROS2. These examples are created for the Computer Vision Subject of Robotics Software Engineering Degree at URJC.

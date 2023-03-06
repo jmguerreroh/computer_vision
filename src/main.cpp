@@ -20,7 +20,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto cv_node = std::make_shared<CVSubscriber>();
+  auto cv_node = std::make_shared<computer_vision::CVSubscriber>();
   rclcpp::spin(cv_node);
 
   rclcpp::shutdown();

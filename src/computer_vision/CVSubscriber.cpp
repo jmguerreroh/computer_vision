@@ -16,6 +16,9 @@
 
 #include "computer_vision/CVSubscriber.hpp"
 
+namespace computer_vision
+{
+
 /**
    TO-DO: Default - the output images and pointcloud are the same as the input
  */
@@ -42,3 +45,5 @@ const
 
   return CVGroup(out_image_rgb, out_image_depth, out_pointcloud);
 }
+
+} // namespace computer_vision

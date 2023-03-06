@@ -14,8 +14,8 @@
  limitations under the License.
 */
 
-#ifndef INCLUDE_COMPUTER_VISION_CVSubscriber_HPP_
-#define INCLUDE_COMPUTER_VISION_CVSubscriber_HPP_
+#ifndef INCLUDE_COMPUTER_VISION__CVSUBSCRIBER_HPP_
+#define INCLUDE_COMPUTER_VISION__CVSUBSCRIBER_HPP_
 
 #include <image_transport/image_transport.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -32,6 +32,13 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
+
+namespace computer_vision
+{
+
+using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
 
 class CVGroup
 {
@@ -60,7 +67,7 @@ public:
   {
     subscription_info_ = create_subscription<sensor_msgs::msg::CameraInfo>(
       "/camera_info", 1,
-      std::bind(&CVSubscriber::topic_callback_info, this, std::placeholders::_1));
+      std::bind(&CVSubscriber::topic_callback_info, this, _1));
 
     subscription_rgb_ = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
       this, "/image_rgb_in", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
@@ -74,8 +81,7 @@ public:
       MySyncPolicy(10), *subscription_rgb_, *subscription_depth_, *subscription_pointcloud_);
     sync_->registerCallback(
       std::bind(
-        &CVSubscriber::topic_callback_multi, this, std::placeholders::_1,
-        std::placeholders::_2, std::placeholders::_3));
+        &CVSubscriber::topic_callback_multi, this, _1, _2, _3));
 
     publisher_depth_ = this->create_publisher<sensor_msgs::msg::Image>(
       "image_depth",
@@ -196,4 +202,6 @@ private:
   std::shared_ptr<image_geometry::PinholeCameraModel> camera_model_;
 };
 
-#endif  // INCLUDE_COMPUTER_VISION_CVSubscriber_HPP_
+} // namespace computer_vision
+
+#endif  // INCLUDE_COMPUTER_VISION__CVSUBSCRIBER_HPP_

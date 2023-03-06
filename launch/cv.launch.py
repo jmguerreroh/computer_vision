@@ -23,7 +23,7 @@ def generate_launch_description():
             package='computer_vision',
             namespace='computer_vision',
             executable='cv_program',
-            output='screen',
+            output='both',
             emulate_tty=True,
             # Use topics from robot
             remappings=[

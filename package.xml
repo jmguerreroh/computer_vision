@@ -16,6 +16,12 @@
   <depend>libopencv-dev</depend>
   <depend>libpcl-all-dev</depend>
   <depend>image_geometry</depend>
+  <depend>depth_image_proc</depend>
+  <depend>Eigen3</depend>
+  <depend>message_filters</depend>
+  <depend>geometry_msgs-dev</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

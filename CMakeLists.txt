@@ -16,6 +16,12 @@ find_package(OpenCV REQUIRED)
 find_package(PCL 1.8 REQUIRED QUIET)
 find_package(pcl_conversions REQUIRED)
 find_package(image_geometry REQUIRED)
+find_package(depth_image_proc REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(message_filters REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 include_directories(include ${OpenCV_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
 link_directories(${OpenCV_LIBRARY_DIRS} ${PCL_LIBRARY_DIRS})
@@ -31,6 +37,12 @@ set(dependencies
   PCL
   pcl_conversions
   image_geometry
+  depth_image_proc
+  Eigen3
+  message_filters
+  tf2_ros
+  geometry_msgs
+  tf2_geometry_msgs
 )
 
 # OpenCV and PCL node

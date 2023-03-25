@@ -25,6 +25,11 @@ def generate_launch_description():
             executable='cv_program',
             output='both',
             emulate_tty=True,
+            # Set to True to process just if there is a subscription,
+            # False to process always
+            parameters=[
+                {"check_subscription_count": False}
+            ],
             # Use topics from robot
             remappings=[
                 ('/camera_info', '/head_front_camera/rgb/camera_info'),

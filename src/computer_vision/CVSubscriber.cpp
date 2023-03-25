@@ -22,7 +22,7 @@ namespace computer_vision
 /**
    TO-DO: Default - the output images and pointcloud are the same as the input
  */
-CVGroup CVSubscriber::image_processing_multi(
+CVGroup CVSubscriber::processing(
   const cv::Mat in_image_rgb,
   const cv::Mat in_image_depth,
   const pcl::PointCloud<pcl::PointXYZRGB> in_pointcloud)

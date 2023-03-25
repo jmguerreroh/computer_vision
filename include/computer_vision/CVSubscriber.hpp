@@ -65,14 +65,19 @@ public:
   CVSubscriber()
   : Node("cv_subscriber")
   {
+    this->declare_parameter("check_subscription_count", false);
+    this->get_parameter("check_subscription_count", check_subscription_count_);
+
     subscription_info_ = create_subscription<sensor_msgs::msg::CameraInfo>(
       "/camera_info", 1,
       std::bind(&CVSubscriber::topic_callback_info, this, _1));
 
     subscription_rgb_ = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
       this, "/image_rgb_in", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
+
     subscription_depth_ = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::Image>>(
       this, "/image_depth_in", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
+
     subscription_pointcloud_ =
       std::make_shared<message_filters::Subscriber<sensor_msgs::msg::PointCloud2>>(
       this, "/pointcloud_in", rclcpp::SensorDataQoS().reliable().get_rmw_qos_profile());
@@ -97,7 +102,9 @@ public:
   }
 
 private:
-  CVGroup image_processing_multi(
+  bool check_subscription_count_;
+
+  CVGroup processing(
     const cv::Mat in_image_rgb,
     const cv::Mat in_image_depth,
     const pcl::PointCloud<pcl::PointXYZRGB> in_pointcloud)
@@ -130,10 +137,11 @@ private:
       return;
     }
 
-    // Remove this condition if you want to process it anyway
-    if ((publisher_rgb_->get_subscription_count() > 0 ) &&
+    // Set "check_subscription_count" to False in the launch file if you want to process it always
+    if (!check_subscription_count_ ||
+      ((publisher_rgb_->get_subscription_count() > 0 ) &&
       (publisher_depth_->get_subscription_count() > 0) &&
-      (publisher_pointcloud_->get_subscription_count() > 0))
+      (publisher_pointcloud_->get_subscription_count() > 0)))
     {
       // Convert ROS Image to OpenCV Image | sensor_msgs::msg::Image -> cv::Mat
       cv_bridge::CvImagePtr image_rgb_ptr, image_depth_ptr;
@@ -154,7 +162,7 @@ private:
       pcl::fromROSMsg(*pointcloud_msg, pointcloud);
 
       // Image and PointCloud processing
-      CVGroup cvgroup = image_processing_multi(
+      CVGroup cvgroup = processing(
         image_rgb_raw, image_depth_raw, pointcloud);
 
       // Convert OpenCV Image to ROS Image

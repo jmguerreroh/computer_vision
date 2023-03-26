@@ -17,7 +17,7 @@
   <depend>libpcl-all-dev</depend>
   <depend>image_geometry</depend>
   <depend>depth_image_proc</depend>
-  <depend>Eigen3</depend>
+  <depend>libeigen3-dev</depend>
   <depend>message_filters</depend>
   <depend>geometry_msgs-dev</depend>
   <depend>tf2_ros</depend>

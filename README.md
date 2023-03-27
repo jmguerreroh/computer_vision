@@ -20,7 +20,7 @@ If you want to use your own robot, in the launcher, change the topic names to ma
 
 * /usr/bin/ld shows libraries conflicts between two versions:
 
-Probably you has installed and built your own OpenCV version, rename your local folder:
+Probably you have installed and built your own OpenCV version, rename your local folder:
 ```bash
 mv /usr/local/lib/cmake/opencv4 /usr/local/lib/cmake/oldopencv4
 ```

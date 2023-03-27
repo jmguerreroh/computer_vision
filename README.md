@@ -16,7 +16,7 @@ ros2 launch computer_vision cv.launch.py
 ```
 If you want to use your own robot, in the launcher, change the topic names to match the robot topics.
 
-# FAQs:
+## FAQs:
 
 * /usr/bin/ld shows libraries conflicts between two versions:
 

@@ -23,9 +23,9 @@ find_package(tf2_ros REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
-include_directories(include ${OpenCV_INCLUDE_DIRS} ${PCL_INCLUDE_DIRS})
-link_directories(${OpenCV_LIBRARY_DIRS} ${PCL_LIBRARY_DIRS})
-add_definitions(${OpenCV_DEFINITIONS} ${PCL_DEFINITIONS})
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 
 set(dependencies
   rclcpp
@@ -46,25 +46,25 @@ set(dependencies
 )
 
 # OpenCV and PCL node
-add_library(${PROJECT_NAME}
+include_directories(include)
+add_library(${PROJECT_NAME} SHARED
   src/${PROJECT_NAME}/CVSubscriber.cpp
 )
 ament_target_dependencies(${PROJECT_NAME} ${dependencies})
-target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES} ${PCL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${PCL_LIBRARIES})
 
 add_executable(cv_program src/main.cpp)
 ament_target_dependencies(cv_program ${dependencies})
 target_link_libraries(cv_program ${PROJECT_NAME})
 
 install(TARGETS ${PROJECT_NAME}
+  cv_program
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
-)
-
-install(TARGETS cv_program
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)

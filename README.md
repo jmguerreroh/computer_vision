@@ -16,6 +16,15 @@ ros2 launch computer_vision cv.launch.py
 ```
 If you want to use your own robot, in the launcher, change the topic names to match the robot topics.
 
+# FAQs:
+
+* /usr/bin/ld shows libraries conflicts between two versions:
+
+Probably you has installed and built your own OpenCV version, rename your local folder:
+```bash
+mv /usr/local/lib/cmake/opencv4 /usr/local/lib/cmake/oldopencv4
+```
+
 ## About
 
 This is a project made by [José Miguel Guerrero], Associate Professor at [Universidad Rey Juan Carlos].

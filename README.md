@@ -6,7 +6,7 @@
 
 This project contains code examples created in Visual Studio Code for Computer Vision using C++ & OpenCV & Point Cloud Library (PCL) in ROS2. These examples are created for the Computer Vision Subject of Robotics Software Engineering Degree at URJC.
 
-This package is recommended to use with the [IR_ROBOTS](https://github.com/IntelligentRoboticsLabs/ir_robots.git) simulator.
+This package is recommended to use with the [TIAGO](https://github.com/jmguerreroh/tiago_simulator) simulator.
 
 # Run
 

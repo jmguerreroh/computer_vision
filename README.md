@@ -28,6 +28,7 @@ mv /usr/local/lib/cmake/opencv4 /usr/local/lib/cmake/oldopencv4
 ## About
 
 This is a project made by [José Miguel Guerrero], Associate Professor at [Universidad Rey Juan Carlos].
+
 Copyright &copy; 2023.
 
 [![Twitter](https://img.shields.io/badge/follow-@jm__guerrero-green.svg)](https://twitter.com/jm__guerrero)

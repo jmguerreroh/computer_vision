@@ -4,10 +4,31 @@
 ![distro](https://img.shields.io/badge/ROS2-Humble-blue)
 [![humble](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml/badge.svg?branch=humble)](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml)
 
-This project contains code examples created in Visual Studio Code for Computer Vision using C++ & OpenCV & Point Cloud Library (PCL) in ROS2. These examples are created for the Computer Vision Subject of Robotics Software Engineering Degree at URJC.
+This project contains code examples created in Visual Studio Code for Computer Vision using C++ & OpenCV & Point Cloud Library (PCL) in ROS 2. These examples are created for the Computer Vision Subject of Robotics Software Engineering Degree at URJC.
 
 This package is recommended to use with the [TIAGO](https://github.com/jmguerreroh/tiago_simulator) simulator.
 
+# Installation 
+
+You need to have previously installed ROS 2. Please follow this [guide](https://docs.ros.org/en/humble/Installation.html) if you don't have it.
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+Clone the repository to your workspace:
+```bash
+mkdir -p ~/cv_ws/src
+cd ~/cv_ws/src/
+git clone https://github.com/jmguerreroh/tiago_simulator.git
+cd ~/cv_ws/
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+# Building project
+
+```bash
+colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF
+``` 
 # Run
 
 Execute:

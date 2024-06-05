@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <description>This packages contains OpenCV and PCL examples for ROS2</description>
   <maintainer email="josemiguel.guerrero@urjc.es">Jose Miguel Guerrero Hernandez</maintainer>
-  <license>Creative Commons Attribution-ShareAlike 4.0 International License.</license>
+  <license>MIT License</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>

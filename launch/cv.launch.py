@@ -19,7 +19,7 @@ def generate_launch_description():
             # Set to True to process just if there is a subscription,
             # False to process always
             parameters=[
-                {"check_subscription_count": False}
+                {'check_subscription_count': False}
             ],
             # Use topics from robot
             remappings=[

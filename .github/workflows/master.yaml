@@ -1,21 +1,21 @@
-name: humble
+name: jazzy
 
 on:
   pull_request:
     branches:
-      - humble
+      - jazzy
   push:
     branches:
-      - humble
+      - jazzy
 
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
     container:
-      image: osrf/ros:humble-desktop
+      image: osrf/ros:jazzy-desktop
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ubuntu-24.04]
       fail-fast: false
     steps:
       - name: Install deps
@@ -24,7 +24,7 @@ jobs:
         uses: ros-tooling/action-ros-ci@0.2.6
         with:
           package-name: computer_vision
-          target-ros2-distro: humble
+          target-ros2-distro: jazzy
           vcs-repo-file-url: ""
           colcon-defaults: |
             {

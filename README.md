@@ -1,25 +1,25 @@
 # Computer Vision Examples
 
 ![distro](https://img.shields.io/badge/Ubuntu%2022-Jammy%20Jellyfish-green)
-![distro](https://img.shields.io/badge/ROS2-Humble-blue)
-[![humble](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml/badge.svg?branch=humble)](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml)
+![distro](https://img.shields.io/badge/ROS2-Jazzy-blue)
+[![humble](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml/badge.svg?branch=jazzy)](https://github.com/jmguerreroh/computer_vision/actions/workflows/master.yaml)
 
 This project contains code examples created in Visual Studio Code for Computer Vision using C++ & OpenCV & Point Cloud Library (PCL) in ROS 2. These examples are created for the Computer Vision Subject of Robotics Software Engineering Degree at URJC.
 
-This package is recommended to use with the [TIAGO](https://github.com/jmguerreroh/tiago_simulator) simulator.
+~~This package is recommended to use with the [TIAGO](https://github.com/jmguerreroh/tiago_simulator) simulator.~~ *Under migration
 
 # Installation 
 
-You need to have previously installed ROS 2. Please follow this [guide](https://docs.ros.org/en/humble/Installation.html) if you don't have it.
+You need to have previously installed ROS 2. Please follow this [guide](https://docs.ros.org/en/jazzy/Installation.html) if you don't have it.
 ```bash
-source /opt/ros/humble/setup.bash
+source /opt/ros/jazzy/setup.bash
 ```
 
 Clone the repository to your workspace:
 ```bash
 mkdir -p ~/cv_ws/src
 cd ~/cv_ws/src/
-git clone https://github.com/jmguerreroh/tiago_simulator.git
+git clone https://github.com/jmguerreroh/computer_vision.git
 cd ~/cv_ws/
 rosdep install --from-paths src --ignore-src -r -y
 ```

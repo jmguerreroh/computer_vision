@@ -19,7 +19,7 @@ Clone the repository to your workspace:
 ```bash
 mkdir -p ~/cv_ws/src
 cd ~/cv_ws/src/
-git clone https://github.com/jmguerreroh/tiago_simulator.git
+git clone https://github.com/jmguerreroh/computer_vision.git
 cd ~/cv_ws/
 rosdep install --from-paths src --ignore-src -r -y
 ```

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 José Miguel Guerrero Hernández
+# Copyright (c) 2025 José Miguel Guerrero Hernández
 #
 # This file is licensed under the terms of the MIT license.
 # See the LICENSE file in the root of this repository.
@@ -16,17 +16,17 @@ def generate_launch_description():
             executable='cv_program',
             output='both',
             emulate_tty=True,
-            # Set to True to process just if there is a subscription,
-            # False to process always
-            parameters=[
-                {'check_subscription_count': False}
-            ],
-            # Use topics from robot
+            # Use topics from camera
             remappings=[
-                ('/camera_info', '/head_front_camera/rgb/camera_info'),
-                ('/image_rgb_in', '/head_front_camera/rgb/image_raw'),
-                ('/image_depth_in', '/head_front_camera/depth_registered/image_raw'),
-                ('/pointcloud_in', '/head_front_camera/depth_registered/points'),
+                ('/camera_info', '/rgb/camera_info'),
+                ('/rgb_in', '/rgb/image'),
+                ('/depth_in', '/stereo/depth'),
+                ('/disparity_in', '/stereo/disparity'),
+                ('/left_raw_in', '/left/image'),
+                ('/right_raw_in', '/right/image'),
+                ('/left_rect_in', '/left_rect/image'),
+                ('/right_rect_in', '/right_rect/image'),
+                ('/pointcloud_in', '/stereo/points'),
             ],
         )
     ])

@@ -32,13 +32,13 @@ class CVGroup
 {
 public:
   CVGroup(
-    cv::Mat rgb,
+    cv::Mat color,
     cv::Mat depth, cv::Mat disparity,
     cv::Mat left_rect, cv::Mat right_rect,
     cv::Mat left_raw, cv::Mat right_raw,
     pcl::PointCloud<pcl::PointXYZRGB> pointcloud)
   {
-    rgb_ = rgb;
+    color_ = color;
     depth_ = depth;
     disparity_ = disparity;
     left_rect_ = left_rect;
@@ -47,7 +47,7 @@ public:
     right_raw_ = right_raw;
     pointcloud_ = pointcloud;
   }
-  cv::Mat getImageRGB() {return rgb_;}
+  cv::Mat getImageColor() {return color_;}
   cv::Mat getImageDepth() {return depth_;}
   cv::Mat getImageDisparity() {return disparity_;}
   cv::Mat getImageLeftRect() {return left_rect_;}
@@ -57,7 +57,7 @@ public:
   pcl::PointCloud<pcl::PointXYZRGB> getPointCloud() {return pointcloud_;}
 
 private:
-  cv::Mat rgb_, depth_, disparity_, left_rect_, right_rect_, left_raw_, right_raw_;
+  cv::Mat color_, depth_, disparity_, left_rect_, right_rect_, left_raw_, right_raw_;
   pcl::PointCloud<pcl::PointXYZRGB> pointcloud_;
 };
 
@@ -76,10 +76,10 @@ public:
         subscription_info_ = nullptr;
       });
 
-    subscription_rgb_ = create_subscription<sensor_msgs::msg::Image>(
-      "/rgb_in", 1,
+    subscription_color_ = create_subscription<sensor_msgs::msg::Image>(
+      "/color_in", 1,
       [this](sensor_msgs::msg::Image::UniquePtr msg) {
-        last_rgb_ = std::move(msg);
+        last_color_ = std::move(msg);
       });
 
     subscription_depth_ = create_subscription<sensor_msgs::msg::Image>(
@@ -124,8 +124,8 @@ public:
         last_pointcloud_ = std::move(msg);
       });
 
-    publisher_rgb_ = this->create_publisher<sensor_msgs::msg::Image>(
-      "rgb",
+    publisher_color_ = this->create_publisher<sensor_msgs::msg::Image>(
+      "color",
       rclcpp::SensorDataQoS().reliable());
 
     publisher_depth_ = this->create_publisher<sensor_msgs::msg::Image>(
@@ -164,7 +164,7 @@ public:
 
 private:
   CVGroup processing(
-    const cv::Mat rgb,
+    const cv::Mat color,
     const cv::Mat depth,
     const cv::Mat disparity,
     const cv::Mat left_rect,
@@ -183,19 +183,19 @@ private:
     }
 
     // Convert ROS Image to OpenCV Image | sensor_msgs::msg::Image -> cv::Mat
-    cv_bridge::CvImagePtr image_rgb_ptr, image_depth_ptr, image_disparity_ptr,
+    cv_bridge::CvImagePtr image_color_ptr, image_depth_ptr, image_disparity_ptr,
       image_left_rect_ptr, image_right_rect_ptr, image_left_raw_ptr, image_right_raw_ptr;
 
-    cv::Mat image_rgb, image_depth, image_disparity, image_left_rect, image_right_rect,
+    cv::Mat image_color, image_depth, image_disparity, image_left_rect, image_right_rect,
       image_left_raw, image_right_raw;
 
     try {
-      if (last_rgb_ != nullptr) {
-        image_rgb_ptr = cv_bridge::toCvCopy(*last_rgb_, sensor_msgs::image_encodings::BGR8);
-        image_rgb = image_rgb_ptr->image;
-        if (counter_rgb_ == 0) {
-          RCLCPP_INFO(get_logger(), "RGB image received");
-          counter_rgb_++;
+      if (last_color_ != nullptr) {
+        image_color_ptr = cv_bridge::toCvCopy(*last_color_, sensor_msgs::image_encodings::BGR8);
+        image_color = image_color_ptr->image;
+        if (counter_color_ == 0) {
+          RCLCPP_INFO(get_logger(), "Color image received");
+          counter_color_++;
         }
       }
 
@@ -231,7 +231,7 @@ private:
 
       if (last_left_rect_ != nullptr) {
         image_left_rect_ptr = cv_bridge::toCvCopy(*last_left_rect_,
-            sensor_msgs::image_encodings::BGR8);
+            sensor_msgs::image_encodings::MONO8);
         image_left_rect = image_left_rect_ptr->image;
         if (counter_left_rect_ == 0) {
           RCLCPP_INFO(get_logger(), "Left rectified image received");
@@ -241,7 +241,7 @@ private:
 
       if (last_right_rect_ != nullptr) {
         image_right_rect_ptr = cv_bridge::toCvCopy(*last_right_rect_,
-            sensor_msgs::image_encodings::BGR8);
+            sensor_msgs::image_encodings::MONO8);
         image_right_rect = image_right_rect_ptr->image;
         if (counter_right_rect_ == 0) {
           RCLCPP_INFO(get_logger(), "Right rectified image received");
@@ -251,7 +251,7 @@ private:
 
       if (last_left_raw_ != nullptr) {
         image_left_raw_ptr = cv_bridge::toCvCopy(*last_left_raw_,
-            sensor_msgs::image_encodings::BGR8);
+            sensor_msgs::image_encodings::MONO8);
         image_left_raw = image_left_raw_ptr->image;
         if (counter_left_raw_ == 0) {
           RCLCPP_INFO(get_logger(), "Left raw image received");
@@ -261,7 +261,7 @@ private:
 
       if (last_right_raw_ != nullptr) {
         image_right_raw_ptr = cv_bridge::toCvCopy(*last_right_raw_,
-            sensor_msgs::image_encodings::BGR8);
+            sensor_msgs::image_encodings::MONO8);
         image_right_raw = image_right_raw_ptr->image;
         if (counter_right_raw_ == 0) {
           RCLCPP_INFO(get_logger(), "Right raw image received");
@@ -284,21 +284,21 @@ private:
     }
 
     // Image and PointCloud processing
-    CVGroup cvgroup = processing(image_rgb, image_depth, image_disparity,
+    CVGroup cvgroup = processing(image_color, image_depth, image_disparity,
       image_left_rect, image_right_rect, image_left_raw, image_right_raw, pointcloud);
 
-    if (!cvgroup.getImageRGB().empty()) {
+    if (!cvgroup.getImageColor().empty()) {
       // Convert OpenCV Image to ROS Image
-      cv_bridge::CvImage image_rgb_bridge =
+      cv_bridge::CvImage image_color_bridge =
         cv_bridge::CvImage(
-        last_rgb_->header, sensor_msgs::image_encodings::BGR8,
-          cvgroup.getImageRGB());
+        last_color_->header, sensor_msgs::image_encodings::BGR8,
+          cvgroup.getImageColor());
       // >> message to be sent
-      sensor_msgs::msg::Image out_image_rgb;
+      sensor_msgs::msg::Image out_image_color;
       // from cv_bridge to sensor_msgs::Image
-      image_rgb_bridge.toImageMsg(out_image_rgb);
+      image_color_bridge.toImageMsg(out_image_color);
       // Publish the data
-      publisher_rgb_->publish(out_image_rgb);
+      publisher_color_->publish(out_image_color);
     }
 
     if (!cvgroup.getImageDepth().empty()) {
@@ -334,7 +334,7 @@ private:
       // Convert to ROS data type
       cv_bridge::CvImage image_left_rect_bridge =
         cv_bridge::CvImage(
-        last_left_rect_->header, sensor_msgs::image_encodings::BGR8,
+        last_left_rect_->header, sensor_msgs::image_encodings::MONO8,
           cvgroup.getImageLeftRect());
       // >> message to be sent
       sensor_msgs::msg::Image out_image_left_rect;
@@ -348,7 +348,7 @@ private:
       // Convert to ROS data type
       cv_bridge::CvImage image_right_rect_bridge =
         cv_bridge::CvImage(
-        last_right_rect_->header, sensor_msgs::image_encodings::BGR8,
+        last_right_rect_->header, sensor_msgs::image_encodings::MONO8,
           cvgroup.getImageRightRect());
       // >> message to be sent
       sensor_msgs::msg::Image out_image_right_rect;
@@ -362,7 +362,7 @@ private:
       // Convert to ROS data type
       cv_bridge::CvImage image_left_raw_bridge =
         cv_bridge::CvImage(
-        last_left_raw_->header, sensor_msgs::image_encodings::BGR8,
+        last_left_raw_->header, sensor_msgs::image_encodings::MONO8,
           cvgroup.getImageLeftRaw());
       // >> message to be sent
       sensor_msgs::msg::Image out_image_left_raw;
@@ -376,7 +376,7 @@ private:
       // Convert to ROS data type
       cv_bridge::CvImage image_right_raw_bridge =
         cv_bridge::CvImage(
-        last_right_raw_->header, sensor_msgs::image_encodings::BGR8,
+        last_right_raw_->header, sensor_msgs::image_encodings::MONO8,
           cvgroup.getImageRightRaw());
       // >> message to be sent
       sensor_msgs::msg::Image out_image_right_raw;
@@ -396,7 +396,7 @@ private:
   }
 
   // Last received data
-  sensor_msgs::msg::Image::UniquePtr last_rgb_ = nullptr;
+  sensor_msgs::msg::Image::UniquePtr last_color_ = nullptr;
   sensor_msgs::msg::Image::UniquePtr last_depth_ = nullptr;
   stereo_msgs::msg::DisparityImage::UniquePtr last_disparity_ = nullptr;
   sensor_msgs::msg::Image::UniquePtr last_left_rect_ = nullptr;
@@ -407,7 +407,7 @@ private:
   std::shared_ptr<image_geometry::PinholeCameraModel> camera_model_ = nullptr;
 
   // Subscriptions
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_rgb_;
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_color_;
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_depth_;
   rclcpp::Subscription<stereo_msgs::msg::DisparityImage>::SharedPtr subscription_disparity_;
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_left_rect_;
@@ -418,7 +418,7 @@ private:
   rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr subscription_info_;
 
   // Publishers
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_rgb_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_color_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_depth_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_disparity_; //Publish Image instead of DisparityImage
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_left_rect_;
@@ -431,7 +431,7 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
 
   //Counters
-  size_t counter_rgb_ = 0;
+  size_t counter_color_ = 0;
   size_t counter_depth_ = 0;
   size_t counter_disparity_ = 0;
   size_t counter_left_rect_ = 0;

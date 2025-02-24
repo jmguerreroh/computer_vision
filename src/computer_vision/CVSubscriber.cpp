@@ -14,7 +14,7 @@ namespace computer_vision
    TO-DO: Default - the output images are half the size of the input and pointcloud are the same as the input
  */
 CVGroup CVSubscriber::processing(
-  const cv::Mat rgb,
+  const cv::Mat color,
   const cv::Mat depth,
   const cv::Mat disparity,
   const cv::Mat left_rect,
@@ -25,15 +25,15 @@ CVGroup CVSubscriber::processing(
 const
 {
   // Create output images
-  cv::Mat out_rgb, out_depth, out_disparity, out_left_rect, out_right_rect, out_left_raw,
+  cv::Mat out_color, out_depth, out_disparity, out_left_rect, out_right_rect, out_left_raw,
     out_right_raw;
   // Create output pointcloud
   pcl::PointCloud<pcl::PointXYZRGB> out_pointcloud;
 
   // Processing - important: check if the input images are empty before to process them
-  if (!rgb.empty()) {
-    cv::resize(rgb, out_rgb, cv::Size(), 0.5, 0.5);
-    cv::imshow("out_image_rgb", out_rgb);
+  if (!color.empty()) {
+    cv::resize(color, out_color, cv::Size(), 0.5, 0.5);
+    cv::imshow("out_image_color", out_color);
   }
   if (!depth.empty()) {
     cv::resize(depth, out_depth, cv::Size(), 0.5, 0.5);
@@ -65,7 +65,7 @@ const
 
   cv::waitKey(3);
 
-  return CVGroup(out_rgb, out_depth, out_disparity, out_left_rect, out_right_rect,
+  return CVGroup(out_color, out_depth, out_disparity, out_left_rect, out_right_rect,
     out_left_raw, out_right_raw, out_pointcloud);
 }
 

@@ -18,8 +18,8 @@ def generate_launch_description():
             emulate_tty=True,
             # Use topics from camera
             remappings=[
-                ('/camera_info', '/rgb/camera_info'),
-                ('/rgb_in', '/rgb/image'),
+                ('/camera_info', '/color/camera_info'),
+                ('/color_in', '/color/image'),
                 ('/depth_in', '/stereo/depth'),
                 ('/disparity_in', '/stereo/disparity'),
                 ('/left_raw_in', '/left/image'),

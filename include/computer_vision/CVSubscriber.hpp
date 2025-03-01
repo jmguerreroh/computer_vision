@@ -390,7 +390,7 @@ private:
       // Convert to ROS data type
       sensor_msgs::msg::PointCloud2 out_pointcloud;
       pcl::toROSMsg(cvgroup.getPointCloud(), out_pointcloud);
-      out_pointcloud.header = last_pointcloud_->header;
+      out_pointcloud.header = last_color_->header;
       publisher_pointcloud_->publish(out_pointcloud);
     }
   }
